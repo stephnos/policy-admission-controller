@@ -1,0 +1,7 @@
+/bin/
+/deploy/kind/certs/
+# hack/.docker-config/config.json is committed intentionally (no credsStore)
+*.test
+coverage.out
+.idea/
+.DS_Store
