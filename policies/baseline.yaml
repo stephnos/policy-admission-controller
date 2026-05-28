@@ -1,0 +1,44 @@
+apiVersion: policygate.io/v1
+kind: PolicyBundle
+metadata:
+  name: baseline
+spec:
+  rules:
+    - id: deny-privileged
+      type: denyPrivileged
+      denyPrivileged: {}
+
+    - id: deny-host-network
+      type: denyHostNetwork
+      denyHostNetwork:
+        exemptNamespaceLabel: policy.example.com/host-network
+        exemptLabelValue: allowed
+
+    - id: require-labels
+      type: requireLabels
+      requireLabels:
+        keys:
+          - app
+          - team
+
+    - id: require-limits
+      type: requireResourceLimits
+      requireResourceLimits:
+        resources:
+          - cpu
+          - memory
+
+    - id: image-allowlist
+      type: denyImageAllowlist
+      denyImageAllowlist:
+        allowPrefixes:
+          - docker.io/library/
+          - gcr.io/
+          - registry.k8s.io/
+          - ghcr.io/
+
+    - id: deny-latest-tag
+      type: denyLatestTag
+      denyLatestTag:
+        exemptNamespaceLabel: policy.example.com/allow-latest
+        exemptLabelValue: "true"
